@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 // require api routes
 require('./routes/apiRoutes.js')(app);
 
-
 // Not found middleware
 app.use((req, res, next) => {
   return next({status: 404, message: 'not found'})
