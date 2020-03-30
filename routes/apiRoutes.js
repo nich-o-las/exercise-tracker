@@ -38,7 +38,7 @@ module.exports = (app) => {
             user.save()
             const returnData = {
               username : user.userName,
-              userId : user._id,
+              _id : user._id,
               description: req.body.description,
               duration: req.body.duration,
               date: data.date
