@@ -5,7 +5,12 @@ module.exports = (app) => {
   app.post('/api/exercise/new-user', (req,res)=>{
     db.User.create({userName: req.body.username})
       .then(data => {
-      res.json({data});
+      const returnData = {
+        username:data.userName,
+        _id: data._id
+      };
+      console.log(data.userName)
+      res.json(returnData);
     });
   });
 

@@ -3,8 +3,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const db = require('./models/');
 const cors = require('cors');
+const dotenv = require('dotenv');
 
 const mongoose = require('mongoose');
+console.log(process.env.MONGO_URI)
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/exercise-track')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
