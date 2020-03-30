@@ -11,7 +11,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/exercise-track')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-app.use(cors());
+app.use(cors({origin:'*'}));
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
