@@ -36,17 +36,12 @@ module.exports = (app) => {
           .then(user => {
             user.exercises.push(data)
             user.save()
-            const returnLog = [];
-            user.exercises.forEach(o => {
-              returnLog.push({
-                description: o.description,
-                duration: o.duration,
-                date: o.date
-              })
-            })
             const returnData = {
               username : user.userName,
-              log : returnLog
+              description: req.body.description,
+              duration: req.body.duration,
+              _id: data._id,
+              date: data.date
             }
             res.json(returnData);
           })
