@@ -68,7 +68,9 @@ module.exports = (app) => {
       .then(data => {
         // send along the data with an additional "count" key / val pair that 
         // corresponds to the number of returned exercises
-        res.json({...data._doc, count: data._doc.exercises.length});
+        const returnData = data._doc;
+        returnData.count = data._doc.exercises.length;
+        res.json(returnData);
       })
       .catch(err => res.json(err));
   })
