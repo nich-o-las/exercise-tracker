@@ -9,7 +9,6 @@ module.exports = (app) => {
         username:data.userName,
         _id: data._id
       };
-      console.log(data.userName)
       res.json(returnData);
     });
   });
@@ -17,7 +16,14 @@ module.exports = (app) => {
   app.get('/api/exercise/users', (req,res)=>{
     db.User.find({})
       .then(data => {
-      res.json({data});
+      const returnData = [];
+      data.forEach((o,i) =>{
+        returnData.push({
+          username: o.userName, 
+          _id: o._id
+        })
+      })
+      res.json(returnData);
     });
   });
 
