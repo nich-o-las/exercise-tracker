@@ -21,8 +21,8 @@ module.exports = (app) => {
         returnData.push({
           username: o.userName, 
           _id: o._id
-        })
-      })
+        });
+      });
       res.json(returnData);
     });
   });
@@ -36,7 +36,14 @@ module.exports = (app) => {
           .then(user => {
             user.exercises.push(data)
             user.save()
-            res.json(user);
+            const returnData = {
+              username : user.userName,
+              userId : user._id,
+              description: req.body.description,
+              duration: req.body.duration,
+              date: data.date
+            }
+            res.json(returnData);
           })
           .catch(err => res.json(err))
       });
