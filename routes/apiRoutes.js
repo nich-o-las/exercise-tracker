@@ -27,42 +27,43 @@ module.exports = (app) => {
             user.save()
             res.json(user);
           })
+          .catch(err => res.json(err))
       });
   })
-      //.catch(err => res.json(err));
 
   app.get('/api/exercise/log/', (req,res)=>{
     const userId = req.query.userId;
-    const queryParams = {_id:userId};
     // set the default options for the populated
     const popMatch = {};
     // if(req.query.limit) popMatch.limit = req.query.limit;
     // if there is a "to" or "from" query, create date object
     if(req.query.to || req.query.from){
       popMatch.date = {};
-    }
-    // if there is "from" query, make it into a date obj and insert it
-    // into the popMatch.date object
-    if(req.query.from){
-      startDate = new Date(req.query.from);
-      // setUTCHours() instead of setHOURS() to ignores local timezone
-      startDate.setUTCHours(0);
-      popMatch.date.$gte = startDate;
-    }
-    // if there is "to" query, make it into a date obj and insert it
-    // into the popMatch.date object
-    if(req.query.to){
-      endDate = new Date(req.query.to);
-      endDate.setUTCHours(23, 59, 59);
-      popMatch.date.$lt = endDate;
+      // if there is "from" query, make it into a date obj and insert it
+      // into the popMatch.date object
+      if(req.query.from){
+        startDate = new Date(req.query.from);
+        // setUTCHours() instead of setHOURS() to ignores local timezone
+        startDate.setUTCHours(0);
+        popMatch.date.$gte = startDate;
+      }
+      // if there is "to" query, make it into a date obj and insert it
+      // into the popMatch.date object
+      if(req.query.to){
+        endDate = new Date(req.query.to);
+        endDate.setUTCHours(23, 59, 59);
+        popMatch.date.$lt = endDate;
+      }
     }
 
-    db.User.findOne(queryParams)
+    db.User.findOne({_id: userId})
       .populate({
         path: 'exercises',
+        // only matches the params where the 
         match: popMatch,
         // limit the number of returned docs if the limit query is present
-        options: {limit: req.query.limit}
+        // sort workouts by newest first
+        options: {limit: req.query.limit, sort : {date: -1}},
       })
       .then(data => {
         // send along the data with an additional "count" key / val pair that 
